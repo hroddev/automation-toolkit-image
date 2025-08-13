@@ -18,10 +18,32 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     unzip \
     git \
-    ansible \
-    python3-pip \
+    software-properties-common \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Python 3.12 from deadsnakes PPA
+RUN add-apt-repository ppa:deadsnakes/ppa -y \
+    && apt-get update \
+    && apt-get install -y \
+    python3.12 \
+    python3.12-venv \
+    python3.12-dev \
+    curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pip for Python 3.12
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.12 get-pip.py \
+    && rm get-pip.py
+
+# Set Python 3.12 as the default python3
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1 \
+    && update-alternatives --install /usr/bin/pip3 pip3 /usr/local/bin/pip3.12 1
+
+# Install Ansible using pip3 (now pointing to Python 3.12)
+RUN pip3 install ansible
 
 # Install Terraform binary version 1.8.5.
 # You can change the version as needed.
@@ -46,7 +68,6 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 RUN az extension add --name azure-devops 
 
-
 # Install prerequisites for Microsoft repository
 RUN apt-get update && apt-get install -y \
     wget \
@@ -58,6 +79,12 @@ RUN apt-get update && apt-get install -y \
 RUN wget -q "https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb" \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb
+
+# Install the Azure Functions Core Tools
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg \
+    && mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg \
+    && sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-$(lsb_release -cs 2>/dev/null)-prod $(lsb_release -cs 2>/dev/null) main" > /etc/apt/sources.list.d/dotnetdev.list' \
+    && apt-get update && apt-get install -y azure-functions-core-tools-4
 
 # Update package list again to include Microsoft repository
 RUN apt-get update
