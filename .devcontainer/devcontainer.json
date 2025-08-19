@@ -1,0 +1,68 @@
+﻿{
+    "name": "Automation Toolkit",
+    "dockerFile": "../Dockerfile",
+    "workspaceFolder": "/home/user",
+
+    // Configure tool-specific properties
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // Terraform extensions
+                "hashicorp.terraform",
+                "ms-vscode.terraform",
+
+                // Ansible extensions
+                "redhat.ansible",
+                "redhat.vscode-yaml",
+
+                // Azure extensions
+                "ms-vscode.azurecli",
+
+                // PowerShell extension
+                "ms-vscode.powershell",
+
+                // Node.js and general development
+                "ms-vscode.vscode-node-azure-pack",
+                "ms-vscode.vscode-json",
+                "eamodio.gitlens",
+
+                // Docker
+                "ms-azuretools.vscode-docker",
+
+                // General productivity
+                "ms-vscode.vscode-eslint",
+                "ms-python.python",
+                "ms-python.autopep8"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "python.defaultInterpreterPath": "/usr/bin/python3",
+                "ansible.python.interpreterPath": "/usr/bin/python3",
+                "terraform.languageServer.enable": true,
+                "powershell.powerShellDefaultVersion": "PowerShell (x64)"
+            }
+        }
+    },
+
+    // Set environment variables
+    "remoteEnv": {
+        "DEBIAN_FRONTEND": "noninteractive"
+    },
+
+    // Forward ports - uncomment and modify as needed
+    // "forwardPorts": [3000, 8080],
+
+    // Use 'postCreateCommand' to run commands after the container is created
+    "postCreateCommand": "echo 'Automation Toolkit DevContainer is ready!' && terraform version && ansible --version && az version && pwsh -v && node --version",
+
+    // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
+    "remoteUser": "root",
+
+    // Configure container features if needed
+    "features": {},
+
+    // Mount the local workspace to persist changes
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/home/user,type=bind,consistency=cached"
+    ]
+}
