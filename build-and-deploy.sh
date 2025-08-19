@@ -6,7 +6,7 @@
 set -e  # Exit if any command fails
 
 echo "🔨 Building automation-toolbox-image:latest image..."
-podman build -t automation-toolbox-image:latest .
+docker build -t automation-toolbox-image:latest .
 
 echo "🗑️ Removing existing automation-toolbox container (if exists)..."
 distrobox rm --force automation-toolbox || echo "ℹ️ No previous container to remove"
