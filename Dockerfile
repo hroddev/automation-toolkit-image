@@ -69,6 +69,9 @@ RUN apt-get install -y powershell
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs
 
+# Install Taskfile
+RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
+
 # Set the default working directory for when the container starts.
 WORKDIR /home/user
 
