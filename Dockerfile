@@ -12,9 +12,18 @@ RUN apt-get update && apt-get install -y \
   git \
   software-properties-common \
   curl \
+  jq \
+  bat \
+  zsh \
+  zoxide \
   lsb-release \
   ca-certificates \
   apt-transport-https \
+  && mkdir -p /etc/apt/keyrings \
+  && curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/charm.gpg \
+  && echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | tee /etc/apt/sources.list.d/charm.list \
+  && apt-get update \
+  && apt-get install -y glow \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -61,4 +70,4 @@ WORKDIR /home/user
 # Install Starship
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 # Set the default shell to bash.
-CMD ["/bin/bash"]
+CMD ["/bin/zsh"]
