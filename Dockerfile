@@ -63,6 +63,21 @@ RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/loc
 # Install Starship
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
+
+# Install Neovim and dependencies for LazyVim
+RUN apt-get update && apt-get install -y \
+    neovim \
+    ripgrep \
+    fd-find \
+    xclip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install LazyVim (optional - uncomment to pre-install)
+# Note: This installs for root. Users should run the installation in their own home
+# RUN git clone https://github.com/LazyVim/starter /root/.config/nvim \
+#     && rm -rf /root/.config/nvim/.git
+
 # Optional: Install Ansible (uncomment if needed)
 # RUN pip3 install --no-cache-dir ansible "ansible[azure]"
 
