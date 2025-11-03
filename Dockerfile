@@ -27,6 +27,9 @@ RUN apt-get update && apt-get install -y \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# Create a symbolic link for batcat to be used as bat
+RUN ln -s /usr/bin/batcat /usr/bin/bat
+
 # Install Terraform binary version 1.8.5
 RUN wget https://releases.hashicorp.com/terraform/1.8.5/terraform_1.8.5_linux_amd64.zip \
   && unzip terraform_1.8.5_linux_amd64.zip \
@@ -65,6 +68,18 @@ RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
 # Install Gemini CLI
 RUN npm install -g @google/gemini-cli
+
+# Install Github CLI
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
+  dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
+  tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+
+RUN apt-get update && \
+  apt-get install -y gh && \
+  rm -rf /var/lib/apt/lists/*
+
 
 # Install Neovim from unstable PPA (required for LazyVim)
 RUN apt-get update && apt-get install -y software-properties-common \
