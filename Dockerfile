@@ -99,6 +99,12 @@ RUN apt-get update && apt-get install -y software-properties-common \
   ripgrep \
   fd-find \
   xclip \
+  imagemagick \
+  ghostscript \
+  texlive-latex-extra \
+  libsqlite3-dev \
+  luarocks \
+  lua5.1 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -112,7 +118,8 @@ RUN export LANG=en_US.UTF-8 && \
 
 # Install node and python providers for Neovim
 RUN pip3 install --no-cache-dir pynvim \
-  && npm install -g neovim
+  && npm install -g neovim \
+  && npm install -g @mermaid-js/mermaid-cli
 
 # Intall libtree-sitter
 RUN npm install -g tree-sitter-cli
