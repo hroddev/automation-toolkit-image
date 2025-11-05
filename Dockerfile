@@ -94,11 +94,29 @@ RUN apt-get update && apt-get install -y software-properties-common \
   && apt-get update \
   && apt-get install -y \
   neovim \
+  libtree-sitter-dev \
+  fzf \
   ripgrep \
   fd-find \
   xclip \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
+
+# set regional settings for Neovim
+RUN locale-gen en_US.UTF-8
+
+# Export locale environment variables
+RUN export LANG=en_US.UTF-8 && \
+  export LANGUAGE=en_US:en && \
+  export LC_ALL=en_US.UTF-8
+
+# Install node and python providers for Neovim
+RUN pip3 install --no-cache-dir pynvim \
+  && npm install -g neovim
+
+# Intall libtree-sitter
+RUN npm install -g tree-sitter-cli
+
 
 # Optional: Install Ansible (uncomment if needed)
 # RUN pip3 install --no-cache-dir ansible "ansible[azure]"
