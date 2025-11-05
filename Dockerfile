@@ -90,6 +90,7 @@ RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygi
 # Install Neovim from unstable PPA (required for LazyVim)
 RUN apt-get update && apt-get install -y software-properties-common \
   && add-apt-repository ppa:neovim-ppa/unstable -y \
+  && add-apt-repository universe -y \
   && apt-get update \
   && apt-get install -y \
   neovim \
