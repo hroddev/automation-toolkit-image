@@ -86,14 +86,11 @@ RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygi
   tar xf lazygit.tar.gz -C /usr/local/bin lazygit && \
   rm lazygit.tar.gz
 
-
-# Install Neovim from unstable PPA (required for LazyVim)
-RUN apt-get update && apt-get install -y software-properties-common \
-  && add-apt-repository ppa:neovim-ppa/unstable -y \
-  && add-apt-repository universe -y \
-  && apt-get update \
-  && apt-get install -y \
-  neovim \
+# Install Neovim from APPImage
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  curl \
+  software-properties-common \
+  # Instala el resto de tus dependencias aquí, si no están ya en otro paso
   libtree-sitter-dev \
   fzf \
   ripgrep \
@@ -105,8 +102,17 @@ RUN apt-get update && apt-get install -y software-properties-common \
   libsqlite3-dev \
   luarocks \
   lua5.1 \
-  && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
+
+# 2. Descargar el AppImage con el nombre de archivo completo.
+RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
+
+# 3. Crear el directorio público y mover el AppImage a su ubicación final.
+RUN mkdir -p /opt/nvim \
+  && mv nvim-linux-x86_64.appimage /usr/local/bin/nvim
+
+# 4. Asignar permisos de ejecución a todos los usuarios.
+RUN chmod a+x /usr/local/bin/nvim
 
 # set regional settings for Neovim
 RUN locale-gen en_US.UTF-8
