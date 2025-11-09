@@ -66,6 +66,9 @@ RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/loc
 # Install Starship
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
+# Install Copitot CLI
+RUN npm install -g @github/copilot
+
 # Install Gemini CLI
 RUN npm install -g @google/gemini-cli
 
