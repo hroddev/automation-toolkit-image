@@ -30,6 +30,14 @@ RUN apt-get update && apt-get install -y \
 # Create a symbolic link for batcat to be used as bat
 RUN ln -s /usr/bin/batcat /usr/bin/bat
 
+# Install postgres 16 client
+RUN wget -qO - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+  && echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && apt-get update \
+  && apt-get install -y postgresql-client-16 \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
 # Install Terraform binary version 1.8.5
 RUN wget https://releases.hashicorp.com/terraform/1.8.5/terraform_1.8.5_linux_amd64.zip \
   && unzip terraform_1.8.5_linux_amd64.zip \
