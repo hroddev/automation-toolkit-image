@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
   curl \
   jq \
   bat \
+  nmap \
   zsh \
   zoxide \
   python3.10 \
