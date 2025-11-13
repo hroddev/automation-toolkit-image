@@ -75,6 +75,9 @@ RUN sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/loc
 # Install Starship
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
+# Install opencode
+RUN curl -fsSL https://opencode.ai/install | bash
+
 # Install Copitot CLI
 RUN npm install -g @github/copilot
 
