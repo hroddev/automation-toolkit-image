@@ -142,6 +142,13 @@ RUN pip3 install --no-cache-dir pynvim \
   && npm install -g neovim \
   && npm install -g @mermaid-js/mermaid-cli
 
+# Install Nushell release binary
+RUN wget https://github.com/nushell/nushell/releases/download/0.99.1/nu-0.99.1-x86_64-unknown-linux-gnu.tar.gz -O /tmp/nushell.tar.gz \
+  && tar -xzf /tmp/nushell.tar.gz -C /tmp \
+  && cp /tmp/nu-0.99.1-x86_64-unknown-linux-gnu/nu /usr/local/bin/ \
+  && chmod +x /usr/local/bin/nu \
+  && rm -rf /tmp/nushell.tar.gz /tmp/nu-*
+
 # Intall libtree-sitter
 RUN npm install -g tree-sitter-cli
 
