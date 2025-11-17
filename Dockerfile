@@ -152,6 +152,18 @@ RUN wget https://github.com/nushell/nushell/releases/download/0.99.1/nu-0.99.1-x
 # Intall libtree-sitter
 RUN npm install -g tree-sitter-cli
 
+# Install eza from Github binaries
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates curl jq tar xz-utils sudo \
+  && URL="$(curl -s https://api.github.com/repos/eza-community/eza/releases/latest \
+  | jq -r '.assets[] | select((.name | test("linux")) and (.name | test("x86_64"))) | .browser_download_url' | head -n1)" \
+  && if [ -z "$URL" ]; then echo "ERROR: no eza linux x86_64 asset found" >&2; exit 1; fi \
+  && curl -L "$URL" -o /tmp/eza.tar \
+  && mkdir -p /tmp/eza \
+  && tar -xf /tmp/eza.tar -C /tmp/eza --strip-components=1 \
+  && mv /tmp/eza/eza /usr/local/bin/ \
+  && chmod +x /usr/local/bin/eza \
+  && rm -rf /var/lib/apt/lists/* /tmp/eza /tmp/eza.tar
 
 # Optional: Install Ansible (uncomment if needed)
 # RUN pip3 install --no-cache-dir ansible "ansible[azure]"
