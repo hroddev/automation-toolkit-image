@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
   jq \
   bat \
   nmap \
+  qemu-utils \
   zsh \
   zoxide \
   python3.10 \
